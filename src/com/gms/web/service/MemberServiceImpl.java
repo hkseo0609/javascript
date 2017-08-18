@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.gms.web.dao.MemberDAO;
 import com.gms.web.dao.MemberDAOImpl;
+import com.gms.web.domain.MajorBean;
 import com.gms.web.domain.MemberBean;
 
 public class MemberServiceImpl implements MemberService {
@@ -18,11 +19,17 @@ public class MemberServiceImpl implements MemberService {
 		
 	}
 	@Override
-	public String addMember(MemberBean member) {
-		String msg = "";
-		String rs = MemberDAOImpl.getInstance().insert(member);
-		msg = (Integer.parseInt(rs)==1)?msg="등록 성공":"등록 실패";
-		return msg;
+	public String addMember(Map<String, Object> map) {
+		System.out.println("memberservice 진입");
+		MemberBean m = (MemberBean)map.get("member");
+		System.out.println("넘어온 값 :"+m.toString());
+		@SuppressWarnings("unchecked")
+		List<MajorBean> list = (List<MajorBean>)map.get("major");
+		System.out.println("넘어온 값 수강과목:"+list);
+		String rs = MemberDAOImpl.getInstance().insert(map);
+		String page = "";
+		page = (Integer.parseInt(rs)==1)? "main" : "join";
+		return page;
 	}
 
 	@Override
@@ -31,7 +38,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public List<MemberBean> getMembers() {
+	public List<?> getMembers() {
 		return MemberDAOImpl.getInstance().selectAll();
 	}
 	
@@ -64,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
 	public Map<String,Object> login(MemberBean bean) {
 		Map<String,Object> map = new HashMap<>();
 		MemberBean temp = findByid(bean.getId());
-		String page = (temp!=null) ? (bean.getPwd().equals(temp.getPwd())) ? "main" : "login": "add";
+		String page = (temp!=null) ? (bean.getPwd().equals(temp.getPwd())) ? "main" : "login": "join";
 		map.put("page", page);
 		map.put("user", temp);
 		return map;

@@ -12,6 +12,8 @@ public class CommandFactory {
 		case Action.MOVE: 
 		case Action.LOGIN:
 		case Action.LOGOUT:
+		case Action.JOIN:
+		case Action.LIST:
 			cmd = new MoveCommand(dir, action, page); //다형성 common의 서브객체(moveCommand)가 cmd를 인스턴스화 시킨다
 			break;
 		

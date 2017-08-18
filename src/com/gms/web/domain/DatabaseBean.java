@@ -1,10 +1,12 @@
 package com.gms.web.domain;
 
 import java.io.Serializable;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 import com.gms.web.constants.DB;
+
 
 public class  DatabaseBean implements Serializable{
 	private static final long serialVersionUID = 1L;

@@ -6,25 +6,28 @@
 	</header>
 	<hr /><br />
 	<div id="image" class="gms-image"><a href="${ctx}/index.jsp"><img src="${ctx}/img/join.jpg" alt=""/></a></div><br />
-		<form id="join_form" action="" class="form-edit">
+		<form id="join_form" class="form-edit" onsubmit="memberAdd()">
 			<fieldset>
 			<legend>회원가입</legend>
 			<span class="join-span">ID</span>
-			<input name="id" type="text" placeholder="아이디" /><br />
+			<input name="id" type="text" id="join_id" placeholder="아이디" /><br />
 			
 			<label>PASSWORD</label>
-			<input name="pwd" type="password" placeholder="비밀번호"/><br />
+			<input name="pwd" type="password" id="join_pwd" placeholder="비밀번호" value="1"/><br />
 			
 			<span class="join-span">NAME</span>
-			<input name="name" type="text" placeholder="이름"/><br />
+			<input name="name" type="text" id="join_name" placeholder="이름" value="다니엘"/><br />
 			
 			<span class="join-span">birthday</span>
-			<input name="birthday" type="text"/><br />
+			<input name="birthday" type="text" id="join_ssn" value="123456789"/><br />
 			
 			<span class="join-span">email</span>
-			<input type="email" name="email" /><br />
+			<input type="email" name="email" value="ddd@test.net"/><br />
 			
-			<input name="gender" type="radio" value="male">남자
+			<span class="join-span">phone</span>
+			<input type="text" name="phone" value="010-1111-1234"/><br />
+			
+			<input name="gender" type="radio" value="male" checked>남자
 			<input name="gender" type="radio" value="female">여자<br />
 			<h4>전공</h4>
 			<select name="major">
@@ -34,16 +37,27 @@
 				<option value="art">미술학</option>
 			</select><br />
 			<h4>수강과목</h4>
-			<input type="checkbox" name="shbject" value="java" checked/>java <br />
-			<input type="checkbox" name="shbject" value="C" checked/>C<br />
-			<input type="checkbox" name="shbject" value="html" />html<br />
-			<input type="checkbox" name="shbject" value="css" />css<br />
-			<input type="checkbox" name="shbject" value="javascript" />javascript<br />
-			<input type="checkbox" name="shbject" value="sql" />sql<br />
-			<input type="checkbox" name="shbject" value="python" />python<br /><br />
-			<input type="submit" value="등록" class="submit-pink">
-			<input type="reset" value="취소" class="submit-blue">
+			<input type="checkbox" name="subject" value="java" checked/>java <br />
+			<input type="checkbox" name="subject" value="c" checked/>C<br />
+			<input type="checkbox" name="subject" value="html" checked/>html<br />
+			<input type="checkbox" name="subject" value="css" />css<br />
+			<input type="checkbox" name="subject" value="javascript" />javascript<br />
+			<input type="checkbox" name="subject" value="sql" />sql<br />
+			<input type="checkbox" name="subject" value="python" />python<br /><br />
+			<input type="submit" id="yes_btn" value="등록" class="submit-pink" onsubmit="memberAdd()">
+			<input type="reset" id="no_btn" value="취소" class="submit-blue">
+			<input type="hidden" name="action" value="join" />
+			<input type="hidden" name="page" value="main" />
 			</fieldset>
 		</form>
 
 <jsp:include page="../common/footer.jsp" />
+<script>
+function memberAdd(){
+	var form = document.getElementById('join_form');
+	form.setAtrribute("action","${ctx}/member.do");
+	form.setAtrribute("method","post");
+	form.submit();
+	return true;
+}
+</script>

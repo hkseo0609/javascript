@@ -32,6 +32,9 @@ CREATE TABLE major(
 --DML
 SELECT * FROM major;
 insert into major(major_id, title) values('computer','컴공');
+ALTER TABLE major add subj_id varchar2(10);
+delete from major where member_id='hhh';
+update MAJOR set subj_id='c' where major_id = '2754';
 
 --*******************
 --
@@ -51,7 +54,7 @@ CREATE TABLE subject(
 );
 --DML
 SELECT * FROM subject;
-insert into subject(subj_id, major_id, title) values('python','computer','python');
+insert into subject(subj_id, major_id, title) values('css','computer','CSS');
 
 --*******************
 -- [3]MEMBER TABLE
@@ -85,7 +88,7 @@ values('min','1234','영민','890101-1111244',sysdate, '010-1234-5678','young@te
 
 UPDATE member SET name='bbb', phone='bbb' WHERE member_id='aaaa';
 UPDATE member SET name='김민주' WHERE member_id='min';
-DELETE FROM MEMBER WHERE id='qqqq';
+DELETE FROM MEMBER WHERE member_id='hhh';
 select * from member order by ssn asc;
 SELECT * FROM MEMBER
 SELECT * FROM MEMBER WHERE member_id='you';
@@ -230,7 +233,18 @@ from (select
 where t.name='유선호';
 
 
+create view student (num, id, name, ssn, email, phone, subj, regdate)
+as
+select rownum as NO, t.id, t.name, t.ssn, t.email, t.phone, t.subj, t.regdate from
+(select m.member_id as id, m.name as name, substr(m.ssn,1,6) as ssn, m.email as email, m.phone as phone, listagg(s.title,',') within group(order by s.title)as subj, substr(m.REGDATE,1) as regdate
+from member m left join major j on m.member_id like j.member_id
+left join subject s on j.subj_id like s.subj_id
+group by m.member_id, name, ssn, email, phone, regdate 
+order by m.regdate)t 
+order by NO desc;
 
+drop view STUDENT;
+select * from STUDENT;
+select * from student where NUM>21;
 
-
-
+select t.* from (select rownum as r, s.* from student s)t where t.r between 1 and 5;

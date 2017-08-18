@@ -1,84 +1,64 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<jsp:include page="member_head.jsp" />
 <jsp:include page="../common/common_head.jsp" />
-	<header>
-	<h1 class="gms-h1">MEMBER LIST</h1>
-	</header>
-	<a href="${ctx}/index.jsp" class="gms-gomain">메인으로 가기</a><br />
-	<hr /><br />
-		<!-- id, pwd, name, ssn, regdate, email, major, subject -->
-		<table id="mem-list-tab">
-			<tr>
-				<th style="width: 5%">No</th>
-				<th style="width: 10%">아이디</th>
-				<th style="width: 10%">이름</th>
-				<th style="width: 10%">생년월일</th>
-				<th style="width: 15%">이메일</th>
-				<th style="width: 10%">전화번호</th>
-				<th style="width: 10%">전공</th>
-				<th style="width: 10%">학점</th>
-				<th style="width: 10%">가입날짜</th>
-				<th style="width: 10%">수정/삭제</th>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>you</td>
-				<td>유선호</td>
-				<td>020202</td>
-				<td>sunho@gmail.com</td>
-				<td>010-1111-2222</td>
-				<td>경제학</td>
-				<td>자바 C언어</td>
-				<td>2017-07-21</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>you</td>
-				<td>유선호</td>
-				<td>020202</td>
-				<td>sunho@gmail.com</td>
-				<td>010-1111-2222</td>
-				<td>경제학</td>
-				<td>자바 C언어</td>
-				<td>2017-07-21</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>you</td>
-				<td>유선호</td>
-				<td>020202</td>
-				<td>sunho@gmail.com</td>
-				<td>010-1111-2222</td>
-				<td>경제학</td>
-				<td>자바 C언어</td>
-				<td>2017-07-21</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>you</td>
-				<td>유선호</td>
-				<td>020202</td>
-				<td>sunho@gmail.com</td>
-				<td>010-1111-2222</td>
-				<td>경제학</td>
-				<td>자바 C언어</td>
-				<td>2017-07-21</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>you</td>
-				<td>유선호</td>
-				<td>020202</td>
-				<td>sunho@gmail.com</td>
-				<td>010-1111-2222</td>
-				<td>경제학</td>
-				<td>자바 C언어</td>
-				<td>2017-07-21</td>
-				<td></td>
-			</tr>
-		</table>
+<header>
+<h1 class="gms-h1">MEMBER LIST</h1>
+</header>
+<hr /><br />
+	<table id="mem-list-tab">
+		<tr>
+			<th>No</th>
+			<th>아이디</th>
+			<th>이름</th>
+			<th>생년월일</th>
+			<th>이메일</th>
+			<th>전화번호</th>
+			<th>수강과목</th>
+			<th>가입날짜</th>
+			<th>수정/삭제</th>
+		</tr>
+		<c:forEach var="i" items="${requestScope.list}">
+		<tr>
+			<td>${i.num}</td>
+			<td>${i.id}</td>
+			<td>${i.name}</td>
+			<td>${i.ssn}</td>
+			<td>${i.email}</td>
+			<td>${i.phone}</td>
+			<td>${i.subj}</td>
+			<td>${i.regdate}</td>
+			<td>수정/삭제</td>
+		</tr>
+		</c:forEach>
+	</table>
+	<nav aria-label="Page navigation" style="width:350px; margin:0 auto;">
+	  <ul class="pagination">
+ 		<c:if test="${requestScope.prevBlock gt 0 }">
+	  	<li><a href="#"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span></a></li>
+	    <li>
+	      <a href="#" aria-label="Previous">
+	        <span aria-hidden="true">&laquo;</span>
+	      </a>
+	    </li>
+	   	</c:if>
+	    <c:forEach varStatus="i" begin="${requestScope.startPage}" end="${requestScope.endPage}" step="1">
+	    <c:choose>
+		    <c:when test="${requestScope.pageNumber eq i.index}">
+		        <li class="active"><a href="#" >${i.index}</a></li>
+		    </c:when>
+		    <c:otherwise>
+		    	 <li><a href="#" onclick="list('member','member_list',${i.index})">${i.index}</a></li>
+		    </c:otherwise>
+		</c:choose>
+	    </c:forEach>
+	    <c:if test="${requestScope.nextBlock le requestScope.theNumberOfPage}">
+	    <li>
+	      <a href="#" aria-label="Next">
+	        <span aria-hidden="true">&raquo;</span>
+	      </a>
+	    </li>
+	    <li><a href="#"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span></a></li>
+	 	</c:if>
+	  </ul>
+	</nav>
+
 <jsp:include page="../common/footer.jsp" />

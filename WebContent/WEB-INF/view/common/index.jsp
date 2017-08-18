@@ -12,16 +12,16 @@
 <h1 class="gms-h1">ADMIN LOGIN</h1>
 </header>
 <hr /><br />
-	<div id="image" class="gms-image"><a href="${ctx}/index.jsp"><img src="${ctx}/resources/img/login.gif" width="380px" height="380px" alt="" /></a></div><br />
+	<div id="image" class="gms-image"><a href="${ctx}/index.jsp"><img src="${ctx}/resources/img/login.gif" width="350px" height="350px" alt="" /></a></div><br />
 		<form id="login_form" name="login_form" class="form-edit" >
 		<fieldset>
 		<legend>로그인</legend>
 			<span class="login-span">ID</span>
-			<input type="text" id="login_id" name="login_id" /><br />
-			<label>PASSWORD</label><input type="password" id="login_pwd" name="login_pwd"/><br />
+			<input type="text" id="login_id" name="login_id" value="da" /><br />
+			<label>PASSWORD</label><input type="password" id="login_pwd" name="login_pwd" value="1234"/><br />
 			<mark style="font-size: 13px"> *ID는 숫자 포함 8글자 이내*</mark><br />
 			<input type="submit" value="LOING" onclick="javascript:loginAlert()" class="submit-pink" >
-			<input type="submit" value="CANCLE" class="submit-blue">
+			<input type="reset" value="CANCLE" class="submit-blue">
 			<input type="hidden" name="action" value="login" />
 			<input type="hidden" name="page" value="main" />
 		</fieldset>
@@ -47,14 +47,13 @@
 		if(input_pwd===""){
 			alert("pass를 입력해 주세요");
 			return false;
-			
 		}
 		var form = document.getElementById('login_form');
 		form.action="${ctx}/common.do";
 		form.method="post";
 		return true;
 	}
-	
+
 </script>
 </body>
 </html>

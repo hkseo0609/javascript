@@ -22,7 +22,7 @@
 			<label>PASSWORD</label><input type="password" id="login_pwd" name="login_pwd"/><br />
 			<mark style="font-size: 13px"> *ID는 숫자 포함 8글자 이내*</mark><br />
 			<input type="submit" value="LOING" class="submit-pink">
-			<input type="submit" value="CANCLE" class="submit-blue">
+			<input type="reset" value="CANCLE" class="submit-blue">
 			<input type="hidden" name="action" value="login" />
 			<input type="hidden" name="page" value="main" />
 		</fieldset>
@@ -39,3 +39,4 @@
 </footer>
 </body>
 </html>
+

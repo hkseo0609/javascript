@@ -1,18 +1,25 @@
 package com.gms.web.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.gms.web.constants.Action;
+import com.gms.web.domain.MajorBean;
 import com.gms.web.domain.MemberBean;
+import com.gms.web.domain.StudentBean;
+import com.gms.web.service.MemberService;
+import com.gms.web.service.MemberServiceImpl;
 import com.gms.web.util.DispatcherServlet;
+import com.gms.web.util.ParamsIterator;
 import com.gms.web.util.Separator;
 
 @WebServlet({"/member.do"})
@@ -21,8 +28,60 @@ public class MemberController extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("member controller get 진입");
 		Separator.init(request);
+		MemberBean member = new MemberBean();
+		MemberService service = MemberServiceImpl.getInstance();
 		switch(request.getParameter(Action.CMD)){
 		case Action.MOVE:
+			DispatcherServlet.send(request, response);
+			break;
+		case Action.JOIN:
+			System.out.println("join 시작");
+			Map<?,?> map=ParamsIterator.execute(request);
+			member.setId((String)map.get("id"));
+			member.setPwd((String)map.get("pwd"));
+			member.setName((String)map.get("name"));
+			member.setSsn((String)map.get("ssn"));
+			member.setEmail((String)map.get("email"));
+			member.setSsn((String)map.get("birthday"));
+			member.setPhone((String)map.get("phone"));
+			//major는 여러 행을 입력해야함, for문
+			
+			String[] subject=((String)map.get("subject")).split(",");
+			List<MajorBean> list = new ArrayList<>();
+			MajorBean major = null;
+			for(int i=0; i<subject.length;i++){
+				major = new MajorBean();
+				major.setMajorId(String.valueOf((int)((Math.random() * 9999) + 1000)));
+				major.setId((String)map.get("id"));
+				major.setTitle((String)map.get("name"));
+				major.setSubjId(subject[i]);
+				list.add(major);
+			}
+			Map<String, Object> tempMap=new HashMap<>();
+			tempMap.put("member", member);
+			tempMap.put("major", list);
+			String page = service.addMember(tempMap);
+			System.out.println("id"+map.get("id"));
+			
+			Separator.cmd.setDirectory("common");
+			Separator.cmd.setPage(page);
+			Separator.cmd.process();
+			DispatcherServlet.send(request, response);
+			break;
+		case Action.LIST:
+			
+			System.out.println("list 진입");
+			@SuppressWarnings("unchecked") 
+			List<StudentBean> mList = (List<StudentBean>)service.getMembers();
+			System.out.println(mList);
+			request.setAttribute("pageNumber", request.getParameter("pageNum"));
+			request.setAttribute("list", mList);
+			request.setAttribute("prevBlock","0");
+			request.setAttribute("startPage",1);
+			
+			int theNumberOfPage=(mList.size()/5!=0)?mList.size()/5+1:mList.size()/5;
+			request.setAttribute("theNumberOfPage",theNumberOfPage);
+			request.setAttribute("endPage",String.valueOf(theNumberOfPage));
 			DispatcherServlet.send(request, response);
 			break;
 		}	

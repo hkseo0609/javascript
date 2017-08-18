@@ -25,13 +25,13 @@ public class CommonController extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("common controller get 진입");
 		HttpSession session = request.getSession();
-		MemberBean member = new MemberBean();
 		Separator.init(request);
 		switch(request.getParameter(Action.CMD)){
 		case Action.MOVE:
 			DispatcherServlet.send(request, response);
 			break;
 		case Action.LOGIN:
+			System.out.println("로그인 탐");
 			MemberService service = MemberServiceImpl.getInstance();
 			MemberBean bean = new MemberBean();
 			bean.setId(request.getParameter("login_id"));
