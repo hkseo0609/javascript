@@ -8,7 +8,7 @@ import com.gms.web.domain.MemberBean;
 public interface MemberService {
 	//목록을 보여주는 list / getter
 	//public MemberBean[] getMembers();
-	public List<?> getMembers();
+	public List<?> list(Object o);
 	//회원수 구하는 것 / getter
 	public String countMembers();
 	//회원 가입(join)시키는 것 / setter

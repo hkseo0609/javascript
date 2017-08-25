@@ -16,6 +16,9 @@ import com.gms.web.constants.Action;
 import com.gms.web.domain.MajorBean;
 import com.gms.web.domain.MemberBean;
 import com.gms.web.domain.StudentBean;
+import com.gms.web.proxy.BlockHandler;
+import com.gms.web.proxy.PageHandler;
+import com.gms.web.proxy.PaginationProxy;
 import com.gms.web.service.MemberService;
 import com.gms.web.service.MemberServiceImpl;
 import com.gms.web.util.DispatcherServlet;
@@ -71,18 +74,33 @@ public class MemberController extends HttpServlet {
 		case Action.LIST:
 			
 			System.out.println("list 진입");
-			@SuppressWarnings("unchecked") 
-			List<StudentBean> mList = (List<StudentBean>)service.getMembers();
-			System.out.println(mList);
-			request.setAttribute("pageNumber", request.getParameter("pageNum"));
-			request.setAttribute("list", mList);
-			request.setAttribute("prevBlock","0");
-			request.setAttribute("startPage",1);
-			
-			int theNumberOfPage=(mList.size()/5!=0)?mList.size()/5+1:mList.size()/5;
-			request.setAttribute("theNumberOfPage",theNumberOfPage);
-			request.setAttribute("endPage",String.valueOf(theNumberOfPage));
+			PaginationProxy pxy = new PaginationProxy(request);
+			pxy.setPageSize(5);
+			pxy.setBlockSize(5);
+			pxy.setTheNumberOfRows(Integer.parseInt(service.countMembers()));
+			pxy.setPageNumber(Integer.parseInt(request.getParameter("pageNum")));
+			int[] arr = PageHandler.attr(pxy);
+			int[] arr2 = BlockHandler.attr(pxy);
+			pxy.execute(arr2,service.list(arr));
 			DispatcherServlet.send(request, response);
+			break;
+		case Action.UPDATE:
+			System.out.println("update 진입");
+			System.out.println(request.getParameter("id"));
+			service.modfiy(service.findByid(request.getParameter("id")));
+			DispatcherServlet.send(request, response);
+			break;
+		case Action.DETAIL:
+			System.out.println("detail 진입");
+			service.findByid(request.getParameter("id"));
+			DispatcherServlet.send(request, response);
+			break;
+		case Action.DELETE:
+			System.out.println("delete 진입");
+			String path = request.getContextPath();
+			System.out.println(path);
+			//request.setAttribute("student", service.remove(request.getParameter("id")));
+			response.sendRedirect(path+"/member.do?action=list&page=member_list&pageNum=1");
 			break;
 		}	
 	}

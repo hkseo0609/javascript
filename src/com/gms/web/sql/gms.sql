@@ -248,3 +248,4 @@ select * from STUDENT;
 select * from student where NUM>21;
 
 select t.* from (select rownum as r, s.* from student s)t where t.r between 1 and 5;
+select t2.* from (select rownum seq, t.* from (select * from student order by num desc)t )t2 where t2.seq between 1 and 5;

@@ -38,8 +38,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public List<?> getMembers() {
-		return MemberDAOImpl.getInstance().selectAll();
+	public List<?> list(Object o) {
+		return MemberDAOImpl.getInstance().selectAll(o);
 	}
 	
 	@Override

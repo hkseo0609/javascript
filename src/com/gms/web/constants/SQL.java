@@ -18,5 +18,6 @@ public class SQL {
 	public static final String BOARD_DELETE=String.format("DELETE FROM %s WHERE %s=?",DB.TABLE_BOARD,DB.BOARD_SEQ);
 
 	public static final String MAJOR_INSERT=String.format("insert into %s(%s,%s,%s,%s) values(?,?,?,?)",DB.TABLE_MAJOR,DB.MAJOR_ID,DB.TITLE, DB.MEM_ID, DB.MAJOR_SUBJ);
-	public static final String STUDENT_LIST="select t.* from (select rownum as r, s.* from student s)t";
+	public static final String STUDENT_LIST="select t.* from (select rownum rnum, s.* from student s)t where t.rnum between ? and ?";
+	public static final String STUDENT_COUNT="SELECT COUNT(*)AS count FROM student";
 }
