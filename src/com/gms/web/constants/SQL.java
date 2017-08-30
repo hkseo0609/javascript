@@ -19,5 +19,9 @@ public class SQL {
 
 	public static final String MAJOR_INSERT=String.format("insert into %s(%s,%s,%s,%s) values(?,?,?,?)",DB.TABLE_MAJOR,DB.MAJOR_ID,DB.TITLE, DB.MEM_ID, DB.MAJOR_SUBJ);
 	public static final String STUDENT_LIST="select t.* from (select rownum rnum, s.* from student s)t where t.rnum between ? and ?";
-	public static final String STUDENT_COUNT="SELECT COUNT(*)AS count FROM student";
+	public static final String STUDENT_COUNT="SELECT COUNT(*)AS count FROM student where name like ?";
+	
+	public static final String STUDENT_SEARCH="select t.* from (select rownum rnum, s.* from student s WHERE name like '%' || ? || '%')t where t.rnum between 1 and 5";
+	public static final String STUDENT_SSEARCH="SELECT * FROM student where name like ?";
+	public static final String STUDENT_FINDBYID=String.format("SELECT * FROM student WHERE %s like ?",DB.ID);
 }

@@ -3,7 +3,7 @@ package com.gms.web.proxy;
 import javax.servlet.http.HttpServletRequest;
 
 import lombok.Getter;
-
+//procy는 항상 handler와 짝꿍, 짐 실어주는 역할
 public abstract class Proxy {
 	@Getter
 	//프록시는 setter가 있으면 보안이 깨진다

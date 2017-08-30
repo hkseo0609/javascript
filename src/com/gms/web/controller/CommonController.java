@@ -18,7 +18,7 @@ import com.gms.web.util.DispatcherServlet;
 import com.gms.web.util.Separator;
 
 //주문 받는 사람 -> 팩토리에 전달
-@WebServlet("/common.do")
+@WebServlet({"/home.do","/common.do"})
 public class CommonController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -26,8 +26,9 @@ public class CommonController extends HttpServlet {
 		System.out.println("common controller get 진입");
 		HttpSession session = request.getSession();
 		Separator.init(request);
-		switch(request.getParameter(Action.CMD)){
+		switch(Separator.cmd.getAction()){
 		case Action.MOVE:
+			System.out.println("무브 탐");
 			DispatcherServlet.send(request, response);
 			break;
 		case Action.LOGIN:

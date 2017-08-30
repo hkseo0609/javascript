@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.gms.web.command.Command;
 import com.gms.web.constants.Action;
 import com.gms.web.domain.MajorBean;
 import com.gms.web.domain.MemberBean;
@@ -28,18 +29,24 @@ import com.gms.web.util.Separator;
 @WebServlet({"/member.do"})
 public class MemberController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("null")
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("member controller get 진입");
 		Separator.init(request);
 		MemberBean member = new MemberBean();
 		MemberService service = MemberServiceImpl.getInstance();
+		Command cmd = new Command();
+		Map<?,?> map = null;
+		PaginationProxy pxy = new PaginationProxy(request);
+		pxy.setPageSize(5);
+		pxy.setBlockSize(5);
 		switch(request.getParameter(Action.CMD)){
 		case Action.MOVE:
 			DispatcherServlet.send(request, response);
 			break;
 		case Action.JOIN:
 			System.out.println("join 시작");
-			Map<?,?> map=ParamsIterator.execute(request);
+			map=ParamsIterator.execute(request);
 			member.setId((String)map.get("id"));
 			member.setPwd((String)map.get("pwd"));
 			member.setName((String)map.get("name"));
@@ -66,35 +73,50 @@ public class MemberController extends HttpServlet {
 			String page = service.addMember(tempMap);
 			System.out.println("id"+map.get("id"));
 			
-			Separator.cmd.setDirectory("common");
+			Separator.cmd.setDir("common");
 			Separator.cmd.setPage(page);
 			Separator.cmd.process();
 			DispatcherServlet.send(request, response);
 			break;
 		case Action.LIST:
-			
 			System.out.println("list 진입");
-			PaginationProxy pxy = new PaginationProxy(request);
-			pxy.setPageSize(5);
-			pxy.setBlockSize(5);
-			pxy.setTheNumberOfRows(Integer.parseInt(service.countMembers()));
+			//System.out.println(map.get("column"));
+			
+			//cmd.setColumn(String.valueOf(map.get("column")));
+			//cmd.setSearch(String.valueOf(map.get("findname")));
+			pxy.setTheNumberOfRows(Integer.parseInt(service.countMembers(cmd)));
 			pxy.setPageNumber(Integer.parseInt(request.getParameter("pageNum")));
-			int[] arr = PageHandler.attr(pxy);
-			int[] arr2 = BlockHandler.attr(pxy);
-			pxy.execute(arr2,service.list(arr));
+			pxy.execute(BlockHandler.attr(pxy), service.list(PageHandler.attr(pxy)));
+			DispatcherServlet.send(request, response);
+			break;
+		case Action.SEARCH:
+			System.out.println("search 진입");
+			map = ParamsIterator.execute(request);
+			
+			cmd = PageHandler.attr(pxy);
+			cmd.setColumn("name");
+			cmd.setSearch(String.valueOf(map.get("findname")));
+			cmd.setStartRow(PageHandler.attr(pxy).getStartRow());
+			cmd.setEndRow(PageHandler.attr(pxy).getEndRow());
+			cmd.setPageNumber(request.getParameter("pageNum"));
+			pxy.setTheNumberOfRows(Integer.parseInt(service.countMembers(cmd)));
+			pxy.setPageNumber(Integer.parseInt(cmd.getPageNumber()));
+			pxy.execute(BlockHandler.attr(pxy), service.findName(cmd));
 			DispatcherServlet.send(request, response);
 			break;
 		case Action.UPDATE:
 			System.out.println("update 진입");
-			System.out.println(request.getParameter("id"));
-			service.modfiy(service.findByid(request.getParameter("id")));
+			cmd.setSearch(request.getParameter("id"));
+			//request.setAttribute("update",service.modfiy(service.findByid(cmd)));
 			DispatcherServlet.send(request, response);
 			break;
 		case Action.DETAIL:
 			System.out.println("detail 진입");
-			service.findByid(request.getParameter("id"));
+			cmd.setSearch(request.getParameter("id"));
+			request.setAttribute("detail", service.findByid(cmd));
 			DispatcherServlet.send(request, response);
 			break;
+		
 		case Action.DELETE:
 			System.out.println("delete 진입");
 			String path = request.getContextPath();

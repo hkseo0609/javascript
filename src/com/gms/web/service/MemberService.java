@@ -3,21 +3,19 @@ package com.gms.web.service;
 import java.util.List;
 import java.util.Map;
 
+import com.gms.web.command.Command;
 import com.gms.web.domain.MemberBean;
+import com.gms.web.domain.StudentBean;
 
 public interface MemberService {
-	//목록을 보여주는 list / getter
-	//public MemberBean[] getMembers();
-	public List<?> list(Object o);
-	//회원수 구하는 것 / getter
-	public String countMembers();
-	//회원 가입(join)시키는 것 / setter
+	//modify와 add빼고는 다 command로 받기
+	public List<?> list(Command cmd);
+	public String countMembers(Command cmd);
 	public String addMember(Map<String, Object> map);
-	public MemberBean findByid(String id);
-	public List<?> findName(String name);
-	//비밀번호는 개인정보니까 노출이 되면 안되니 콩깍지에 넣어서 보내기
+	public StudentBean findByid(Command cmd);
+	public List<?> findName(Command cmd);
 	public String modfiy(MemberBean bean);
-	public String remove(String id);
+	public String remove(Command cmd);
 	public Map<String,Object> login(MemberBean bean);
 
 }

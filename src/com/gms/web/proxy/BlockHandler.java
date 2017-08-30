@@ -16,7 +16,18 @@ public class BlockHandler{
 		result[2]=startPage;
 		result[3]=endPage;
 		result[4]=startPage-(theNumberOfPage/pxy.getBlockSize()); //prevBlock
-		result[5]=startPage+(theNumberOfPage/pxy.getBlockSize()); //nextBlock
+		result[5]=theNumberOfPage-(startPage+(theNumberOfPage/pxy.getBlockSize())); //nextBlock
+		
+		System.out.println(
+				"pageNumber is "+result[0]+",\n"+
+				"theNumberOfPage is "+result[1]+",\n"+
+				"startPage is "+result[2]+",\n"+
+				"endPage is "+result[3]+",\n"+
+				"prevBlock is "+result[4]+",\n"+
+				"nextBlock is "+result[5]
+				);
+		
+		
 		return result;
 	}
 }

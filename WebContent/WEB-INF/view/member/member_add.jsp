@@ -51,12 +51,3 @@
 		</form>
 
 <jsp:include page="../common/footer.jsp" />
-<script>
-function memberAdd(){
-	var form = document.getElementById('join_form');
-	form.setAtrribute("action","${ctx}/member.do");
-	form.setAtrribute("method","post");
-	form.submit();
-	return true;
-}
-</script>

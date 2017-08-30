@@ -4,15 +4,17 @@
 <h1 class="gms-h1">MEMBER LIST</h1>
 </header>
 <hr /><br />
-<div class="row, gms-margin-0">
+<div style="margin: 0 auto; width: 70%">
+<div class="row">
   <div class="col-lg-4">
     <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
+      <input type="text" id="findName" name="findName" class="form-control" placeholder="Search for...">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Go!</button>
+        <button id="findbtn" class="btn btn-default" type="button" onclick="findName()">Go!</button>
       </span>
     </div>
   </div>
+</div>
 </div>
 <div style="height: 40px; width: 300px;"></div>
 	<table id="mem-list-tab">
@@ -77,17 +79,5 @@
 	  </ul>
 	</nav>
 <script>
-function updateStudent(id){
-	alert('수정할 id'+id);
-	location.href="${ctx}/member.do?action=update&page=member_update&id="+id;
-}
-function deleteStudent(id){
-	alert('삭제할 id'+id);
-	location.href="${ctx}/member.do?action=delete&page=member_list&id="+id;
-}
-function detailStudent(id){
-	alert('조회할 id'+id);
-	location.href="${ctx}/member.do?action=detail&page=member_detail&id="+id;;
-}
 </script>
 <jsp:include page="../common/footer.jsp" />

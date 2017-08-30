@@ -135,7 +135,49 @@
  		n3c[3].setAttribute("class", "divider");
  		n3c[4].setAttribute("onclick","deleteTarget('board')");
  		
- 		document.getElementById('logout').setAttribute("onclick","moveTo('common','logout','index')");
+ 		document.getElementById('logout').setAttribute("onclick","moveTo('common','logout','home')");
  	}
+ 	
+ 	function updateStudent(id){
+ 		alert('수정할 id'+id);
+ 		location.href="${ctx}/member.do?action=update&page=member_update&id="+id;
+ 	}
+ 	function deleteStudent(id){
+ 		alert('삭제할 id'+id);
+ 		location.href="${ctx}/member.do?action=delete&page=member_list&id="+id;
+ 	}
+ 	function detailStudent(id){
+ 		alert('조회할 id'+id);
+ 		location.href="${ctx}/member.do?action=detail&page=member_detail&id="+id;
+ 	}
+ 	function findName(){
+ 		var findname = document.getElementById("findName").value;
+ 		alert('find_name: '+findname);
+ 		location.href="${ctx}/member.do?action=search&page=member_list&findname="+findname;
+ 	}
+ 	
+ 	function memberAdd(){
+ 		var form = document.getElementById('join_form');
+ 		form.setAtrribute("action","${ctx}/member.do");
+ 		form.setAtrribute("method","post");
+ 		form.submit();
+ 		return true;
+ 	}
+
+ 	function test(){
+  	  document.querySelector('#update_btn').onclick=studentInfo;
+    }
+    function studentInfo(){
+  	  var id = 'id';
+  	  var id_val ='${requestScope.detail.id}',
+  	  		name = 'name',
+  	  		name_val = '${requestScope.detail.name}',
+  	  		email = 'email',
+  	  		email_val = '${requestScope.detail.email}';
+  	  sessionStorage.setItem(id,id_val);
+  	  sessionStorage.setItem(name,name_val);
+  	  sessionStorage.setItem(email,email_val);
+  	  
+    }
  	
 </script>

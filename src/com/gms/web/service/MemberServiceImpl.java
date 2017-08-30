@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.gms.web.command.Command;
 import com.gms.web.dao.MemberDAO;
 import com.gms.web.dao.MemberDAOImpl;
 import com.gms.web.domain.MajorBean;
 import com.gms.web.domain.MemberBean;
+import com.gms.web.domain.StudentBean;
 
 public class MemberServiceImpl implements MemberService {
 	public static MemberServiceImpl instance = new MemberServiceImpl();
@@ -33,23 +35,23 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public String countMembers() {
-		return String.valueOf(MemberDAOImpl.getInstance().count());
+	public String countMembers(Command cmd) {
+		return String.valueOf(MemberDAOImpl.getInstance().count(cmd));
 	}
 	
 	@Override
-	public List<?> list(Object o) {
-		return MemberDAOImpl.getInstance().selectAll(o);
+	public List<?> list(Command cmd) {
+		return MemberDAOImpl.getInstance().selectAll(cmd);
 	}
 	
 	@Override
-	public MemberBean findByid(String id) {
-		return MemberDAOImpl.getInstance().selectByid(id);
+	public StudentBean findByid(Command cmd) {
+		return MemberDAOImpl.getInstance().selectByid(cmd);
 	}
 	
 	@Override
-	public List<MemberBean> findName(String name) {
-		return MemberDAOImpl.getInstance().selectByName(name);
+	public List<?> findName(Command cmd) {
+		return MemberDAOImpl.getInstance().selectByName(cmd);
 	}
 	
 	@Override
@@ -61,16 +63,18 @@ public class MemberServiceImpl implements MemberService {
 			
 	}	
 	@Override
-	public String remove(String deleteId) {
+	public String remove(Command cmd) {
 		String msg = "";
-		String rs = MemberDAOImpl.getInstance().delete(deleteId);
+		String rs = MemberDAOImpl.getInstance().delete(cmd);
 		msg = (Integer.parseInt(rs)==1)?msg="삭제 성공":"삭제 실패";
 		return msg;
 	}
 	@Override
 	public Map<String,Object> login(MemberBean bean) {
 		Map<String,Object> map = new HashMap<>();
-		MemberBean temp = findByid(bean.getId());
+		Command cmd = new Command();
+		cmd.setSearch(bean.getId());
+		MemberBean temp = MemberDAOImpl.getInstance().login(cmd);
 		String page = (temp!=null) ? (bean.getPwd().equals(temp.getPwd())) ? "main" : "login": "join";
 		map.put("page", page);
 		map.put("user", temp);

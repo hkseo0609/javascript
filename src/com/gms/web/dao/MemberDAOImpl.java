@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.gms.web.command.Command;
 import com.gms.web.constants.DB;
 import com.gms.web.constants.SQL;
 import com.gms.web.constants.Vendor;
@@ -30,14 +31,13 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public List<?> selectAll(Object o) {
+	public List<?> selectAll(Command cmd) {
 		List<StudentBean> list = new ArrayList<>();
-		int[] arr=(int[]) o;
 		try {
 			conn = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(SQL.STUDENT_LIST);
-			pstmt.setString(1, String.valueOf(arr[0]));
-			pstmt.setString(2, String.valueOf(arr[1]));
+			pstmt.setString(1, cmd.getStartRow());
+			pstmt.setString(2, cmd.getEndRow());
 			ResultSet rs = pstmt.executeQuery();
 			StudentBean member = null;
 			while(rs.next()){
@@ -62,18 +62,35 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public String count() {
+	public String count(Command cmd) {
+		System.out.println("=========count 진입");
+		System.out.println("dao 넘어온 이름: "+cmd.getSearch());
+		System.out.println("dao 넘어온 칼럼: "+cmd.getColumn());
 		int count=0;
 		try {
-			ResultSet rs=DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.STUDENT_COUNT).executeQuery();
+			conn = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection();
+			PreparedStatement pstmt = null;
+			if(cmd.getSearch()==null){
+				//sql = "SELECT COUNT(*) AS count FROM student";
+				pstmt = conn.prepareStatement(SQL.STUDENT_COUNT);
+				pstmt.setString(1, "%");
+			}else{
+				//sql = String.format("SELECT COUNT(*) AS count FROM student where name like '%s'", cmd.getSearch());
+				pstmt = conn.prepareStatement(SQL.STUDENT_COUNT);
+				pstmt.setString(1, "%"+cmd.getSearch()+"%");
+			}
+		
+			ResultSet rs=pstmt.executeQuery();
 
 			if(rs.next()){
 				count = Integer.valueOf(rs.getString("count"));
+				System.out.println("dao count값 : "+count);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return String.valueOf(count);
 	}
 
@@ -133,18 +150,22 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public MemberBean selectByid(String id) {
-		MemberBean member = null;
+	public StudentBean selectByid(Command cmd) {
+		StudentBean member = null;
 		try {
-			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_FINDBYID);
-			pstmt.setString(1, id);
+			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.STUDENT_FINDBYID);
+			pstmt.setString(1, cmd.getSearch());
 			ResultSet rs = pstmt.executeQuery();
 	
 			if(rs.next()){
-				member = new MemberBean();
-				member.setId(rs.getString(DB.MEM_ID));
+				member = new StudentBean();
+				member.setNum(rs.getString(DB.STUD_NUM));
+				member.setSubj(rs.getString(DB.STUD_TITLE));
+				member.setId(rs.getString(DB.ID));
 				member.setName(rs.getString(DB.MEM_NAME));
-				member.setPwd(rs.getString(DB.MEM_PWD));
+				member.setSsn(rs.getString(DB.MEM_SSN));
+				member.setEmail(rs.getString(DB.MEM_EMAIL));
+				member.setPhone(rs.getString(DB.MEM_PHONE));
 				member.setRegdate(rs.getString(DB.MEM_REGDATE));
 			}
 		} catch (Exception e) {
@@ -156,21 +177,29 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public List<MemberBean> selectByName(String name) {
-		List<MemberBean> list = new ArrayList<>();
+	public List<?> selectByName(Command cmd) {
+		System.out.println("파인드네임 진입 : "+cmd.getSearch());
+		System.out.println("파인드네임 진입 : "+cmd.getColumn());
+		List<StudentBean> list = new ArrayList<>();
 		try {
-			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_FINDBYNAME);
-			pstmt.setString(1, name);
+			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.STUDENT_SSEARCH);
+			pstmt.setObject(1, "%"+cmd.getSearch()+"%");
 			ResultSet rs = pstmt.executeQuery();
-			MemberBean member = null;
+			StudentBean member = null;
 			while(rs.next()){
-				member = new MemberBean();
-				member.setId(rs.getString(DB.MEM_ID));
+				member = new StudentBean();
+				member.setNum(rs.getString(DB.STUD_NUM));
+				member.setSubj(rs.getString(DB.STUD_TITLE));
+				member.setId(rs.getString(DB.ID));
 				member.setName(rs.getString(DB.MEM_NAME));
-				member.setPwd(rs.getString(DB.MEM_PWD));
+				member.setSsn(rs.getString(DB.MEM_SSN));
+				member.setEmail(rs.getString(DB.MEM_EMAIL));
+				member.setPhone(rs.getString(DB.MEM_PHONE));
 				member.setRegdate(rs.getString(DB.MEM_REGDATE));
+				
 				list.add(member);
 			}
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -195,11 +224,11 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public String delete(String id) {
+	public String delete(Command cmd) {
 		String rs="";
 		try {
 			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_DELETE);
-			pstmt.setString(1, id);
+			pstmt.setString(1, cmd.getSearch());
 			rs = String.valueOf(pstmt.executeUpdate());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -207,6 +236,28 @@ public class MemberDAOImpl implements MemberDAO{
 		}
 		return rs;
 		
+	}
+	@Override
+	public MemberBean login(Command cmd) {
+		MemberBean member = null;
+		try {
+			PreparedStatement pstmt = DatabaseFactory.createDatabse(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_FINDBYID);
+			pstmt.setString(1, cmd.getSearch());
+			ResultSet rs = pstmt.executeQuery();
+	
+			if(rs.next()){
+				member = new MemberBean();
+				member.setId(rs.getString(DB.MEM_ID));
+				member.setName(rs.getString(DB.MEM_NAME));
+				member.setPwd(rs.getString(DB.MEM_PWD));
+				member.setRegdate(rs.getString(DB.MEM_REGDATE));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+         return member;
 	}
 
 }
