@@ -106,7 +106,9 @@ public class MemberController extends HttpServlet {
 			break;
 		case Action.UPDATE:
 			System.out.println("update 진입");
-			cmd.setSearch(request.getParameter("id"));
+			map=ParamsIterator.execute(request);
+			System.out.println("수정할 id: "+map.get("id"));
+			System.out.println("수정할 email: "+map.get("email"));
 			//request.setAttribute("update",service.modfiy(service.findByid(cmd)));
 			DispatcherServlet.send(request, response);
 			break;

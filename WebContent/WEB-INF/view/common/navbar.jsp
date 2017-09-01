@@ -6,7 +6,7 @@
       <a class="navbar-brand" href="#">HEEKYOUNG</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a onclick="moveTo('common','move','main')"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+      <li id="home"><a><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
       <li class="dropdown">
       	<a href="#" class="dropdown-toggle"
       	data-toggle="dropdown" role="button"
@@ -51,7 +51,8 @@
   </div>
 </nav>
 <script>
-	window.onload=navbarLoad();	
+	navbar.init();
+	/*window.onload=navbarLoad();	
 	function moveTo(dir, action, page){
 		location.href="${ctx}/"+dir+".do?action="+action+"&page="+page;
 	}
@@ -63,6 +64,7 @@
 	}
  	 
  	function mainLoad(){
+ 		//native js 코딩
  		var u1 = document.getElementById("main_ul_stu");
  		var u2 = document.getElementById("main_ul_grade");
  		var u3 = document.getElementById("main_ul_board");
@@ -100,9 +102,9 @@
  		u3c[2].setAttribute("onclick","moveTo('board','move','board_detail')");
  		u3c[3].setAttribute("onclick","moveTo('board','move','board_update')");
  		u3c[4].setAttribute("onclick","deleteTarget('board')");
- 	}
+ 	}*/
  	
- 	function navbarLoad(){
+ 	/*function navbarLoad(){
  	 	var n1 = document.getElementById("nav_stu");
  		var n2 = document.getElementById("nav_grade");
  		var n3 = document.getElementById("nav_board");
@@ -162,9 +164,9 @@
  		form.setAtrribute("method","post");
  		form.submit();
  		return true;
- 	}
+ 	}*/
 
- 	function test(){
+ 	/*function test(){
   	  document.querySelector('#update_btn').onclick=studentInfo;
     }
     function studentInfo(){
@@ -178,6 +180,6 @@
   	  sessionStorage.setItem(name,name_val);
   	  sessionStorage.setItem(email,email_val);
   	  
-    }
- 	
+    }*/
+
 </script>

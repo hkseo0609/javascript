@@ -38,7 +38,7 @@
 		</div>
 	</div>
 </div>
-<jsp:include page="footer.jsp" />
 <script>
-	window.onload=mainLoad();
+main.init();
 </script>
+<jsp:include page="footer.jsp" />

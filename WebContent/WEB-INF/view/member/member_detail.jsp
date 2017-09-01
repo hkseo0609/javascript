@@ -3,6 +3,7 @@
 <header>
 <h1 class="gms-h1">MEMBER DETAIL</h1>
 </header>
+<input type="hidden" id="detail_id" value="${requestScope.detail.id }" />
       <div class="container">    
           <div class="jumbotron">
             <div class="row">
@@ -13,15 +14,16 @@
                 </div>
                 <div class="col-md-9 col-xs-12 col-sm-6 col-lg-9">
                     <div class="" style="border-bottom:1px solid black">
-                      <span style="font-size: 30px">${requestScope.detail.name }</span>&nbsp;&nbsp;&nbsp;
-                      <button id="update_btn" onclick="moveTo(member, move, member_update)">정보수정</button>
+                      <p id="detail_name"><span style="font-size: 30px">${requestScope.detail.name }</span></p>&nbsp;&nbsp;&nbsp;
+                      <button id="update_btn">정보수정</button>
                     </div>
                       <hr>
                     <div class="col-md-8">  
                     <ul class=" details">
-                      <li><p><span class="glyphicon glyphicon-earphone one" style="width:50px;"></span>${requestScope.detail.phone }</p></li>
-                      <li><p><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>${requestScope.detail.email }</p></li>
-                      <li><p><span class="glyphicon glyphicon-map-marker one" style="width:50px;"></span>Hyderabad</p></li>
+                      
+                      <li><p id="detail_phone"><span class="glyphicon glyphicon-earphone one" style="width:50px;"></span>${requestScope.detail.phone }</p></li>
+                      <li><p id="detail_email"><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>${requestScope.detail.email }</p></li>
+                      <li><p id="detail_title"> <span class="glyphicon glyphicon-map-marker one" style="width:50px;"></span></p></li>
                       <li><p><span class="glyphicon glyphicon-credit-card one" style="width:50px;"></span>66330007</p></li>
                     </ul>
                     </div>
@@ -82,3 +84,6 @@
               
           </div>
       </div>
+ <script>
+memberDetail.init();
+ </script>

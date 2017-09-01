@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="${js}/member.js"></script>
 <!doctype html>
 <html lang="ko">
 <head>
@@ -20,7 +22,7 @@
 			<input type="text" id="login_id" name="login_id" value="da" /><br />
 			<label>PASSWORD</label><input type="password" id="login_pwd" name="login_pwd" value="1234"/><br />
 			<mark style="font-size: 13px"> *ID는 숫자 포함 8글자 이내*</mark><br />
-			<input type="submit" value="LOING" onclick="javascript:loginAlert()" class="submit-pink" >
+			<input id="loginBtn" type="submit" value="LOING"  class="submit-pink" >
 			<input type="reset" value="CANCLE" class="submit-blue">
 			<input type="hidden" name="action" value="login" />
 			<input type="hidden" name="page" value="main" />
@@ -36,24 +38,9 @@
   <a href="${ctx}/jdbc_test.jsp">DB연결 테스트</a>
   </div>
 </footer>
-<script>
-	function loginAlert(){
-		var input_id = document.getElementById("login_id").value;
-		var input_pwd = document.getElementById("login_pwd").value;
-		if(input_id===""){
-			alert("id를 입력해 주세요");
-			return false;
-		}
-		if(input_pwd===""){
-			alert("pass를 입력해 주세요");
-			return false;
-		}
-		var form = document.getElementById('login_form');
-		form.action="${ctx}/common.do";
-		form.method="post";
-		return true;
-	}
 
+<script>
+	member.init();
 </script>
 </body>
 </html>

@@ -8,7 +8,7 @@
 			<div class="row main">
 				<div class="panel-heading">
 	               <div class="panel-title text-center">
-	               		<h1 class="title">${requestScope.detail.name} User Profile</h1>
+	               		<h1 id="update_id" class="title"></h1>
 	               		<hr />
 	               	</div>
 	            </div> 
@@ -16,11 +16,21 @@
 					<form class="form-horizontal" method="post" action="#">
 						
 						<div class="form-group">
-							<label for="name" class="cols-sm-2 control-label">ID</label>
+							<label for="name" class="cols-sm-2 control-label">NAME</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
 									<input type="text" class="form-control" name="name" id="name"  placeholder="Steve Jobs"/>
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="username" class="cols-sm-2 control-label">password</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+									<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Username"/>
 								</div>
 							</div>
 						</div>
@@ -34,23 +44,13 @@
 								</div>
 							</div>
 						</div>
-
+						
 						<div class="form-group">
-							<label for="username" class="cols-sm-2 control-label">Username</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="password" class="cols-sm-2 control-label">Password</label>
+							<label for="password" class="cols-sm-2 control-label">phone</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="password" id="password" data-toggle="popover" placeholder="Enter your Password"/>
+									<input type="text" class="form-control" name="phone" id="phone" data-toggle="popover" placeholder="변경할 전화번호를 입력하세요"/>
 								</div>
 								<span id="passwordInfo" class="hide">
 								    <ul>
@@ -65,20 +65,23 @@
 						</div>
 
 						<div class="form-group">
-							<label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
+							<label for="confirm" class="cols-sm-2 control-label">수강과목</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password"/>
+									<input type="text" class="form-control" name="title" id="title"  placeholder="변경할 수강과목을 입력하세요"/>
 								</div>
 								<span id="confirmPass"></span>
 							</div>
 						</div>
 
 						<div class="form-group ">
-							<button type="button" class="btn btn-primary btn-lg btn-block login-button">UPDATE</button>
+							<button type="button" id="update_btn" class="btn btn-primary btn-lg btn-block login-button">UPDATE</button>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
+<script>
+memberUpdate.init();
+</script>
